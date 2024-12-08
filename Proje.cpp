@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 #include <iostream>
-#include <Windows.h>
+#include <cstdlib>
 using namespace std;
 
 
@@ -23,16 +23,17 @@ private:
 };
 
 int randomNum() {
-    int randomNum;
+    long randomNum1;
     srand(time(0));
-    randomNum = rand() % 5;
-    return randomNum;
+    randomNum1 = (rand() % 6) - 1;
+    return randomNum1;
 }
 
 
 class Hangman {
 public:
     void play() {
+        Player Player1;
         cout << "Hello! What is your name? ";
         getline(cin, userName);
         Player1.setName(userName);
@@ -42,6 +43,7 @@ public:
         cout << "*************************** HANGMAN ***************************" << endl << endl;
         cout << "Please choose a difficulty (h = hard   e = easy): ";
         cin >> userChoice;
+        
 
         if (userChoice == 'h') {
             cout << "Player has chosen hard mode" << endl;
@@ -53,27 +55,30 @@ public:
             cout << "Computer is generating prompt..." << endl;
             numOneFive = randomNum();
             rightGuess = EasyGameWords[numOneFive];
-        while (wrongAnswers <= 6) {
-            if (wrongAnswers == 6) {
-                checkSwitchHook();
-                cout << hook << endl << endl;
-                cout << "See what you did! You fail!" << endl;
-                break;
-            }
+            guessedWord = string(rightGuess.length(), '_');
+            while (wrongAnswers <= 6) {
+                if (wrongAnswers == 6) {
+                    checkSwitchHook();
+                    cout << hook << endl << endl;
+                    cout << "See what you did! You fail!" << endl;
+                    break;
+                }
                 cout << "prompt is: ";
                 cout << EasyGamePrompts[numOneFive] << endl << endl;
                 checkSwitchHook();
                 cout << hook << endl << endl;
 
-
                 cout << "        ";
-                for (int i = 0; i < rightGuess.length(); i++) {
-                    cout << "_ ";
+                for (char c : guessedWord) {
+                    cout << c << ' ';
                 }
                 cout << endl << endl;
 
                 cout << "Enter your first letter choice: ";
                 cin >> userChoice;
+                if (!isalpha(userChoice)) {
+                    cout << "Please enter a valid input, This counts as a wrong guess. DONT DO IT AGAIN!" << endl;
+                }
                 counter = 0;
                 for (int i = 0; i < EasyGameWords[numOneFive].length(); i++) {
                     if (userChoice == rightGuess[i]) {
@@ -85,23 +90,23 @@ public:
                 if (counter == 0) {
                     wrongAnswers++;
                 }
-                else if(counter == 1){
+                else if (counter == 1) {
                     cout << "You got " << counter << " letter!" << endl;
-                   
+
                 }
                 else {
                     cout << "You got " << counter << " letters!" << endl;
-                  
+
                 }
                 if (guessedWord == rightGuess) {
-                    cout << "Congratulations!!! You guessed the word! It was: " << rightGuess << endl;
+                    cout << "Hey you did it! You figured it out! The word was " << rightGuess << endl;
                     break;
                 }
-               
+
             }
         }
-     
-        
+
+
 
     }
 
@@ -146,6 +151,7 @@ int main()
 {
     Hangman Game;
     Game.play();
+        
 }
 
 
