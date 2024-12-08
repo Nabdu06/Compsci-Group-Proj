@@ -6,6 +6,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
+#include <Windows.h>
 using namespace std;
 
 
@@ -203,7 +204,7 @@ int main()
 {
     Hangman Game;
     Game.play();            // yep... this is our main (kinda underwhelming)
-
+    Sleep(5000);
 }
 
 
